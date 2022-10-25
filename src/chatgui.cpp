@@ -5,6 +5,7 @@
 #include "chatbot.h"
 #include "chatlogic.h"
 #include "chatgui.h"
+#include <iostream>
 
 // size of chatbot window
 const int width = 414;
@@ -61,6 +62,8 @@ void ChatBotFrame::OnEnter(wxCommandEvent &WXUNUSED(event))
     // delete text in text control
     _userTextCtrl->Clear();
 
+    //std::cout << "sending message to chatbot" << std::endl;
+
     // send user text to chatbot 
      _panelDialog->GetChatLogicHandle()->SendMessageToChatbot(std::string(userText.mb_str()));
 }
@@ -107,6 +110,8 @@ END_EVENT_TABLE()
 ChatBotPanelDialog::ChatBotPanelDialog(wxWindow *parent, wxWindowID id)
     : wxScrolledWindow(parent, id)
 {
+    //std::cout << "Entering ChaBotPanelDialog" <<std::endl;
+
     // sizer will take care of determining the needed scroll size
     _dialogSizer = new wxBoxSizer(wxVERTICAL);
     this->SetSizer(_dialogSizer);
@@ -118,7 +123,8 @@ ChatBotPanelDialog::ChatBotPanelDialog(wxWindow *parent, wxWindowID id)
     ////
 
     // create chat logic instance
-    _chatLogic = new ChatLogic(); 
+    _chatLogic.reset(new ChatLogic()); 
+    //_chatLogic = new ChatLogic(); 
 
     // pass pointer to chatbot dialog so answers can be displayed in GUI
     _chatLogic->SetPanelDialogHandle(this);
@@ -126,6 +132,7 @@ ChatBotPanelDialog::ChatBotPanelDialog(wxWindow *parent, wxWindowID id)
     // load answer graph from file
     _chatLogic->LoadAnswerGraphFromFile(dataPath + "src/answergraph.txt");
 
+    //std::cout << "Exiting ChaBotPanelDialog" <<std::endl;
     ////
     //// EOF STUDENT CODE
 }
@@ -135,7 +142,11 @@ ChatBotPanelDialog::~ChatBotPanelDialog()
     //// STUDENT CODE
     ////
 
-    delete _chatLogic;
+    //std::cout << "ChatBotPanelDialog destructor" << std::endl;
+
+    //delete _chatLogic;
+
+    //std::cout << "ChatBotPanelDialog destroyed" << std::endl;
 
     ////
     //// EOF STUDENT CODE
