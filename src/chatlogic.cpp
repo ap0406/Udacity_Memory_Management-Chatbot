@@ -18,10 +18,10 @@ ChatLogic::ChatLogic()
     ////
 
     // create instance of chatbot
-    _chatBot = new ChatBot("../images/chatbot.png");
+    //_chatBot = new ChatBot("../images/chatbot.png");
 
     // add pointer to chatlogic so that chatbot answers can be passed on to the GUI
-    _chatBot->SetChatLogicHandle(this);
+    //_chatBot->SetChatLogicHandle(this);
 
     //std::cout << "chatlogic created" << std::endl;
 
@@ -37,7 +37,7 @@ ChatLogic::~ChatLogic()
     //std::cout << "chatlogic destructor" << std::endl;
 
     // delete chatbot instance
-    delete _chatBot;
+    //delete _chatBot;
 
     // // delete all nodes
     // for (auto it = std::begin(_nodes); it != std::end(_nodes); ++it)
@@ -223,8 +223,18 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
     }
 
     // add chatbot to graph root node
-    _chatBot->SetRootNode(rootNode);
-    rootNode->MoveChatbotHere(_chatBot);
+    //_chatBot->SetRootNode(rootNode);
+    //rootNode->MoveChatbotHere(_chatBot);
+
+    ChatBot Local_chatBot("../images/chatbot.png");
+    //std::cout << "local_chatbot " << &Local_chatBot << " chatLogic " << this << " rootNode " << rootNode << std::endl;
+    Local_chatBot.SetChatLogicHandle(this);
+
+    // add chatbot to graph root node
+    Local_chatBot.SetRootNode(rootNode);
+    rootNode->MoveChatbotHere(std::move(Local_chatBot));
+
+    //std::cout << "chatlogic _chatBot " << _chatBot << std::endl;
     
     ////
     //// EOF STUDENT CODE
@@ -242,15 +252,18 @@ void ChatLogic::SetChatbotHandle(ChatBot *chatbot)
 
 void ChatLogic::SendMessageToChatbot(std::string message)
 {
+    //std::cout << "chatlogic SendMessageToChatBot _chatBot " << _chatBot << " _currentNode " << _chatBot->GetCurrentNode() << std::endl;
     _chatBot->ReceiveMessageFromUser(message);
 }
 
 void ChatLogic::SendMessageToUser(std::string message)
 {
+    //std::cout << "chatlogic SendMessageToUser _chatBot " << _chatBot << std::endl;
     _panelDialog->PrintChatbotResponse(message);
 }
 
 wxBitmap *ChatLogic::GetImageFromChatbot()
 {
+    //std::cout << "chatlogic GetImageFromChatbot image* " << _chatBot->GetImageHandle() << std::endl;
     return _chatBot->GetImageHandle();
 }

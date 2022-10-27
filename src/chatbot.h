@@ -42,6 +42,7 @@ public:
     void SetChatLogicHandle(ChatLogic *chatLogic) { _chatLogic = chatLogic; }
     ChatLogic* GetChatLogicHandle() { return _chatLogic; }
     wxBitmap *GetImageHandle() { return _image; }
+    GraphNode *GetCurrentNode() { return _currentNode; }
 
     // communication
     void ReceiveMessageFromUser(std::string message);
